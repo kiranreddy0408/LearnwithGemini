@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weak and Prerequisite Topics</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- slider stylesheet -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="static/css/bootstrap.css" />
+  <!-- font awesome style -->
+  <link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css" />
+
+  <!-- Custom styles for this template -->
+  <link href="static/css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="static/css/responsive.css" rel="stylesheet" /><!-- Custom CSS -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+    }
+    .container {
+      margin-top: 50px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+    }
+    .left-section, .right-section {
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .left-section {
+      background-color: #d9edf7;
+    }
+    .right-section {
+      background-color: #dff0d8;
+    }
+    .topic-list {
+      list-style: none;
+      padding: 0;
+    }
+    .topic-item {
+      margin-bottom: 10px;
+    }
+    .btn-learn {
+      margin-left: 10px;
+      font-size: 12px;
+      padding: 3px 8px;
+      float: right;
+    }
+  </style>
+</head>
+<body>
+    {% extends "nav2.html" %}
+  
+    {% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 left-section">
+        <h2>Weak Topics</h2>
+        <ul class="topic-list" id="weak-topics">
+          <!-- Weak topics will be dynamically added here -->
+        </ul>
+      </div>
+      <div class="col-md-6 right-section">
+        <h2>Prerequisite Topics</h2>
+        <ul class="topic-list" id="prerequisite-topics">
+          <!-- Prerequisite topics will be dynamically added here -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom JavaScript -->
+  <script>
+    // Sample JSON data
+    // var jsonData = {
+    //   "weakTopics": ["topic1", "topic2"],
+    //   "prerequisiteTopics": ["topic1", "topic2"]
+    // };
+
+    const reportString = `{{report}}`;
+  const reportStringFixed = reportString.replace(/&#34;/g, '"');
+
+  // Parse the quiz data from the fixed string
+  const jsonData = JSON.parse(reportStringFixed);
+
+    // Function to render weak topics
+    function renderWeakTopics() {
+      var weakTopicsList = document.getElementById('weak-topics');
+      weakTopicsList.innerHTML = ''; // Clear previous content
+      if (jsonData.weakTopics.length === 0) {
+        weakTopicsList.innerHTML = '<li>No weak topics found</li>';
+      } else {
+        jsonData.weakTopics.forEach(function(topic) {
+          var listItem = document.createElement('li');
+          listItem.className = 'topic-item';
+          listItem.innerHTML = `
+            ${topic}
+            <button class="btn btn-primary btn-sm btn-learn" onclick="learnTopic('${topic}')">Learn</button>
+          `;
+          weakTopicsList.appendChild(listItem);
+        });
+      }
+    }
+
+    // Function to render prerequisite topics
+    function renderPrerequisiteTopics() {
+      var prerequisiteTopicsList = document.getElementById('prerequisite-topics');
+      prerequisiteTopicsList.innerHTML = ''; // Clear previous content
+      if (jsonData.prerequisiteTopics.length === 0) {
+        prerequisiteTopicsList.innerHTML = '<li>No prerequisite topics found</li>';
+      } else {
+        jsonData.prerequisiteTopics.forEach(function(topic) {
+          var listItem = document.createElement('li');
+          listItem.className = 'topic-item';
+          listItem.textContent = topic;
+          const learnButton = document.createElement('button');
+          learnButton.className = 'btn btn-primary btn-sm btn-learn';
+          learnButton.textContent = 'Learn';
+          learnButton.onclick = function() {
+            learnTopic(topic);
+          };
+          listItem.appendChild(learnButton);
+          prerequisiteTopicsList.appendChild(listItem);
+        });
+      }
+    }
+
+    // Function to handle learning a topic
+    function learnTopic(topic) {
+      // Redirect to the learn page with the selected topic
+      window.location.href = `/learn?topic=${encodeURIComponent(topic)}`;
+    }
+
+    // Render topics when the page loads
+    window.onload = function() {
+      renderWeakTopics();
+      renderPrerequisiteTopics();
+    };
+  </script>
+   {% endblock %}
+</body>
+</html>

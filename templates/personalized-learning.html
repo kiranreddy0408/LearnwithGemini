@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Identify Your Gaps</title>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .hero_area {
+        background-color: transparent;
+    }
+    .dropdown select {
+        font-size: 16px;
+    }
+</style>
+</head>
+<body>
+    <div class="hero_area" >
+ 
+        <!-- header section strats -->
+        {% extends "navbar.html" %}
+    
+    {% block content %}
+<style>
+.hero_area{
+    background-color: transparent;
+}</style>
+ <div class="container">
+            <h1 class="mt-5">Identify Your Gaps</h1>
+            <div class="dropdown mt-4">
+                <label for="board">Board:</label>
+                <select id="board" class="form-control">
+                    <option value="cbse">CBSE</option>
+                    <option value="icse">ICSE</option>
+                    <option value="state">State Board</option>
+                </select>
+            </div>
+            <div class="dropdown">
+                <label for="class">Class:</label>
+                <select id="class" class="form-control" onchange="updateSubjects()">
+                    <option value="class-10">Class 10</option>
+                    <option value="class-11">Class 11</option>
+                    <option value="class-12">Class 12</option>
+                </select>
+            </div>
+            <div class="dropdown">
+                <label for="subject">Subject:</label>
+                <select id="subject" class="form-control" onchange="updateChapters()">
+                    <!-- Options will be populated dynamically based on class selection -->
+                </select>
+            </div>
+            <div class="dropdown">
+                <label for="chapter">Chapter:</label>
+                <select id="chapter" class="form-control">
+                    <!-- Options will be populated dynamically based on subject selection -->
+                </select>
+            </div>
+            <button class="btn btn-primary btn-identify" onclick="identifyGaps()">Generate Test
+            </button>
+        </div>
+        <span class="spinner-border text-primary" role="status" id="spinner" style="display: none;">
+                
+            </span>
+        
+      
+<script>
+    function updateSubjects() {
+        var classSelect = document.getElementById("class");
+        var subjectSelect = document.getElementById("subject");
+        subjectSelect.innerHTML = "";
+        
+        var classValue = classSelect.value;
+        var subjects = [];
+
+        switch(classValue) {
+            case "class-10":
+                subjects = ["Mathematics", "Science", "English", "Social Science"];
+                break;
+            case "class-11":
+                subjects = ["Physics", "Chemistry", "Biology", "Mathematics"];
+                break;
+            case "class-12":
+                subjects = ["Physics", "Chemistry", "Biology", "Mathematics"];
+                break;
+        }
+
+        subjects.forEach(function(subject) {
+            var option = document.createElement("option");
+            option.text = subject;
+            option.value = subject.toLowerCase().replace(/\s+/g, '-');
+            subjectSelect.add(option);
+        });
+        
+        // Update chapters as well
+        updateChapters();
+    }
+
+    function updateChapters() {
+        var subjectSelect = document.getElementById("subject");
+        var chapterSelect = document.getElementById("chapter");
+        chapterSelect.innerHTML = "";
+        
+        var subjectValue = subjectSelect.value;
+        var chapters = [];
+
+        switch(subjectValue) {
+            case "mathematics":
+                chapters = ["Algebra", "Geometry", "Trigonometry", "Calculus"];
+                break;
+            case "science":
+                chapters = ["Physics", "Chemistry", "Biology", "Environmental Science"];
+                break;
+            case "english":
+                chapters = ["Grammar", "Literature", "Writing Skills", "Vocabulary"];
+                break;
+            case "social-science":
+                chapters = ["History", "Geography", "Civics", "Economics"];
+                break;
+            case "physics":
+                chapters = ["Mechanics", "Thermodynamics", "Optics", "Electromagnetism"];
+                break;
+            case "chemistry":
+                chapters = ["Physical Chemistry", "Organic Chemistry", "Inorganic Chemistry", "Biochemistry"];
+                break;
+            case "biology":
+                chapters = ["Cell Biology", "Genetics", "Ecology", "Anatomy"];
+                break;
+        }
+
+        chapters.forEach(function(chapter) {
+            var option = document.createElement("option");
+            option.text = chapter;
+            option.value = chapter.toLowerCase().replace(/\s+/g, '-');
+            chapterSelect.add(option);
+        });
+    }
+
+    function identifyGaps() {
+        var board = document.getElementById("board").value;
+        var selectedClass = document.getElementById("class").value;
+        var selectedSubject = document.getElementById("subject").value;
+        var selectedChapter = document.getElementById("chapter").value;
+        
+        // You can perform further actions here based on the selected values
+        console.log("Board:", board);
+        console.log("Class:", selectedClass);
+        console.log("Subject:", selectedSubject);
+        console.log("Chapter:", selectedChapter);
+    }
+    function identifyGaps() {
+        document.getElementById("spinner").style.display = "block";
+         
+        var board = document.getElementById("board").value;
+        var selectedClass = document.getElementById("class").value;
+        var selectedSubject = document.getElementById("subject").value;
+        var selectedChapter = document.getElementById("chapter").value;
+        
+        // Prepare data to send to backend
+        var formData = {
+            board: board,
+            class: selectedClass,
+            subject: selectedSubject,
+            chapter: selectedChapter
+        };
+
+        // Send data to backend route using Fetch API
+        fetch('/test', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+    // Handle response from backend if needed
+    console.log('Response from backend:', data);
+
+    // Hide spinner and loading text after receiving response
+    document.getElementById("spinner").style.display = "none";
+
+    // Create a form element
+    const form = document.createElement('form');
+    form.method = 'post'; // Use POST method
+    form.action = '/testpage'; // Specify the action URL
+
+    // Create an input element to pass the data
+    const input = document.createElement('input');
+    input.type = 'hidden'; // Hide the input
+    input.name = 'quiz_data'; // Specify the name of the parameter
+    input.value = JSON.stringify(data);
+    console.log(JSON.stringify(data)); // Convert data to a string and assign it as the value
+
+    // Append the input to the form
+    form.appendChild(input);
+
+    // Append the form to the document body
+    document.body.appendChild(form);
+
+    // Submit the form
+    form.submit();
+})
+        .catch(error => {
+            // Handle errors
+            console.error('There was a problem with the fetch operation:', error);
+            
+            // Hide spinner and loading text in case of error
+            document.getElementById("spinner").style.display = "none";
+            // document.getElementById("loadingText").style.display = "none";
+        });
+    }
+
+
+    // Populate subjects initially
+    updateSubjects();
+</script>
+{% endblock %}
+</div>
+</body>
+</html>

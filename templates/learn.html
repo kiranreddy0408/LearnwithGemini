@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{topic_name}}</title>
+<link rel="stylesheet" href="styles.css">
+
+  <!-- slider stylesheet -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="static/css/bootstrap.css" />
+  <!-- font awesome style -->
+  <link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css" />
+
+  <!-- Custom styles for this template -->
+  <link href="static/css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="static/css/responsive.css" rel="stylesheet" />
+<style>
+    .container {
+        display: flex;
+    }
+
+    .left-section {
+        width: 50%;
+    }
+
+    .right-section {
+        width: 50%;
+        /* Style right section as needed */
+    }
+
+    .module {
+        margin-bottom: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        width: 100%; /* Reduced width */
+        margin-left: auto; /* Centering module */
+        margin-right: auto; /* Centering module */
+    }
+
+    .checkbox {
+        margin-right: 5px;
+    }
+
+    .start-learning-btn {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 8px 15px;
+        text-align: center;
+        text-decoration: none;
+        /* display: inline-block; */
+        font-size: 12px;
+        margin-top: 5px;
+        cursor: pointer;
+        border-radius: 10px;
+        float: right;
+    }
+    .content{
+        width: 100%;
+    margin-left: 10%;
+    margin-top: 10%;
+
+    }
+
+</style>
+</head>
+<body>
+    {% extends "nav2.html" %}
+  
+    {% block content %}
+    <div class="container">
+
+        <div class="left-section">
+            <h2>Vector Learning Modules</h2>
+            <div id="modules-container"></div>
+        </div>
+        <div class="right-section">
+            <!-- Right section content goes here -->
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const modulesContainer = document.getElementById('modules-container');
+            const modulesDataint = `{{sub_modules}}`
+//   const modulesData = {
+//     "sub_modules": ["Vectors and Scalars", "Adding and Subtracting Vectors", "Multiplying Vectors by Scalars", "Dot Product", "Cross Product"]
+//   };
+const modulesDataintFixed =modulesDataint.replace(/&#34;/g, '"');
+
+// Parse the quiz data from the fixed string
+const modulesData= JSON.parse(modulesDataintFixed);
+
+            modulesData.sub_modules.forEach(module => {
+                const moduleDiv = document.createElement('div');
+                moduleDiv.className = 'module';
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'checkbox';
+                checkbox.id = module.replace(/\s+/g, '-').toLowerCase(); // Convert module name to id
+                checkbox.name = 'modules';
+
+                const label = document.createElement('label');
+                label.htmlFor = checkbox.id;
+                label.textContent = module;
+
+                moduleDiv.appendChild(checkbox);
+                moduleDiv.appendChild(label);
+
+               
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    const modulesContainer = document.getElementById('modules-container');
+    const rightSection = document.querySelector('.right-section'); // Select the right section for displaying response
+    const modulesDataint = `{{sub_modules}}`;
+    // Assume modulesDataint is processed as before to get modulesData
+    const modulesDataintFixed = modulesDataint.replace(/&#34;/g, '"');
+    const modulesData = JSON.parse(modulesDataintFixed);
+
+    modulesData.sub_modules.forEach(module => {
+        const moduleDiv = document.createElement('div');
+        moduleDiv.className = 'module';
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'checkbox';
+        checkbox.id = module.replace(/\s+/g, '-').toLowerCase(); // Convert module name to id
+        checkbox.name = 'modules';
+
+        const label = document.createElement('label');
+        label.htmlFor = checkbox.id;
+        label.textContent = module;
+
+        moduleDiv.appendChild(checkbox);
+        moduleDiv.appendChild(label);
+
+        const startLearningButton = document.createElement('button');
+        startLearningButton.textContent = 'Start Learning';
+        startLearningButton.className = 'start-learning-btn';
+        startLearningButton.addEventListener('click', function() {
+            // AJAX request to Flask backend
+            fetch('/get_module_content', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({submodule: module}),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the content in the right section
+                rightSection.innerHTML = `<div class="content">${data.content}</div>`; // Simple display, can be enhanced as needed
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        moduleDiv.appendChild(startLearningButton);
+
+        modulesContainer.appendChild(moduleDiv);
+    });
+});
+
+    </script>
+    {% endblock %}
+</body>
+</html>

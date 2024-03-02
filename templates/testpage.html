@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="styles.css">
+
+  <!-- slider stylesheet -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="static/css/bootstrap.css" />
+  <!-- font awesome style -->
+  <link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css" />
+
+  <!-- Custom styles for this template -->
+  <link href="static/css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="static/css/responsive.css" rel="stylesheet" />
+<style>
+  body {
+    background-color: #f0f2f5;
+  }
+  .container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .question h4 {
+    color: #333;
+  }
+  .list-group-item {
+    background-color: #e9ecef;
+    border: 1px solid #dee2e6;
+  }
+  .correct-answer {
+    background-color: #d4edda;
+  }
+  .explanation {
+    margin-top: 10px;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+    {% extends "nav2.html" %}
+  
+    {% block content %}
+
+<div class="container">
+  <h2>Quiz</h2>
+  <div id="quiz-container"></div>
+  <button id="submit-btn" class="btn btn-primary">Submit</button>
+  <button id="track-btn" class="btn btn-primary d-none">Track</button>
+  <div id="score-container"></div>
+</div>
+
+<script>
+  const quizDataString = `{{quiz_data}}`;
+  const quizDataStringFixed = quizDataString.replace(/&#34;/g, '"');
+  const quizData = JSON.parse(quizDataStringFixed);
+  const quizContainer = document.getElementById('quiz-container');
+  const submitBtn = document.getElementById('submit-btn');
+  const trackBtn = document.getElementById('track-btn');
+  const scoreContainer = document.getElementById('score-container');
+  let score = 0;
+
+  for (const [questionKey, questionData] of Object.entries(quizData.q)) {
+    const questionDiv = document.createElement('div');
+    questionDiv.className = 'question mb-4';
+    const questionTitle = document.createElement('h4');
+    questionTitle.textContent = `Question ${questionKey.slice(1)}`;
+    questionDiv.appendChild(questionTitle);
+    const questionText = document.createElement('p');
+    questionText.textContent = questionData.question;
+    questionDiv.appendChild(questionText);
+    const optionsList = document.createElement('ul');
+    optionsList.className = 'list-group';
+    questionData.opt.forEach((option, index) => {
+      const optionItem = document.createElement('li');
+      optionItem.className = 'list-group-item';
+      const radioBtn = document.createElement('input');
+      radioBtn.type = 'radio';
+      radioBtn.name = `question-${questionKey}`;
+      radioBtn.value = index;
+      optionItem.appendChild(radioBtn);
+      optionItem.appendChild(document.createTextNode(option));
+      optionsList.appendChild(optionItem);
+    });
+    questionDiv.appendChild(optionsList);
+    quizContainer.appendChild(questionDiv);
+  }
+
+  submitBtn.addEventListener('click', async () => {
+    score = calculateScore();
+    showScore();
+    showCorrectAnswers();
+    submitBtn.classList.add('d-none');
+    trackBtn.classList.remove('d-none');
+  });
+
+  trackBtn.addEventListener('click', async () => {
+    const submissionData = prepareSubmissionData();
+    try {
+      const response = await fetch('/validate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(submissionData)
+      });
+      if (response.ok) {
+        console.log('Submission successfully sent to the backend.');
+        
+        // Additional processing or feedback to user can be added here
+        response.json().then(data => {
+        console.log('Response from backend:', data);
+
+        // Create a form element
+        const form = document.createElement('form');
+        form.method = 'post'; // Use POST method
+        form.action = '/testreport'; // Specify the action URL
+
+        // Create an input element to pass the data
+        const input = document.createElement('input');
+        input.type = 'hidden'; // Hide the input
+        input.name = 'report'; // Specify the name of the parameter
+        input.value = JSON.stringify(data);
+        
+        // Append the input to the form
+        form.appendChild(input);
+
+        // Append the form to the document body
+        document.body.appendChild(form);
+
+        // Submit the form
+        form.submit();
+      });  
+    } else {
+        console.error('Failed to send submission to the backend.');
+      }
+    } catch (error) {
+      console.error('An error occurred while sending the submission to the backend:', error);
+    }
+  });
+
+  function calculateScore() {
+    let totalQuestions = 0;
+    let correctAnswers = 0;
+    for (const [questionKey, questionData] of Object.entries(quizData.q)) {
+      const selectedOption = document.querySelector(`input[name="question-${questionKey}"]:checked`);
+      if (selectedOption) {
+        totalQuestions++;
+        if (parseInt(selectedOption.value) === questionData.ans) {
+          correctAnswers++;
+        }
+      }
+    }
+    return totalQuestions === 0 ? 0 : correctAnswers / totalQuestions * 100;
+  }
+
+  function showScore() {
+    scoreContainer.textContent = `Your score: ${score}%`;
+  }
+
+  function showCorrectAnswers() {
+    for (const [questionKey, questionData] of Object.entries(quizData.q)) {
+      const optionsList = document.querySelector(`input[name="question-${questionKey}"]`).closest('ul');
+      const explanationText = document.createElement('p');
+      explanationText.className = 'explanation';
+      explanationText.textContent = `Correct Answer: ${questionData.opt[questionData.ans]} - Explanation: ${questionData.exp}`;
+      optionsList.parentElement.appendChild(explanationText);
+      optionsList.children[questionData.ans].className += ' correct-answer';
+    }
+  }
+
+  function prepareSubmissionData() {
+    const submissionData = [];
+    for (const [questionKey, questionData] of Object.entries(quizData.q)) {
+      const selectedOption = document.querySelector(`input[name="question-${questionKey}"]:checked`);
+      if (selectedOption) {
+        const question = questionData.question;
+        const chosenAnswer = selectedOption.value;
+        const correctAnswer = questionData.ans;
+        submissionData.push({
+          question,
+          chosenAnswer,
+          correctAnswer
+        });
+      }
+    }
+    return submissionData;
+  }
+</script>
+{% endblock %}
+</body>
+</html>

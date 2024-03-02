@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS to match the student dashboard image */
+body {
+  background-color: #f4f7fc;
+  color: #5a5c69;
+  font-family: 'Nunito', sans-serif;
+}
+
+/* Sidebar styles */
+#sidebar {
+  background-color: #313348;
+  color: #fff;
+}
+
+#sidebar .profile-card {
+  background-color: #262837;
+  color: #fff;
+}
+
+.nav-pills .nav-link {
+  color: #c7c9d9;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .nav-link:hover {
+  background-color: #43465c;
+  color: #fff;
+}
+
+/* Icons */
+.bi {
+  margin-right: 8px;
+}
+
+/* Main content styles */
+#main-content {
+  background-color: #fff;
+}
+
+/* Cards */
+.overview-card,
+.notice-item,
+.card {
+  background-color: #ffffff;
+  border: none;
+  box-shadow: 0 0.46875rem 2.1875rem rgb(90 97 105 / 10%), 0 0.9375rem 1.40625rem rgb(90 97 105 / 10%), 0 0.25rem 0.53125rem rgb(90 97 105 / 12%), 0 0.125rem 0.1875rem rgb(90 97 105 / 10%);
+}
+
+/* Test Performance Chart */
+#testPerformanceChart {
+  max-height: 200px;
+}
+
+/* Other specific styles */
+/* ... Add other styles to match the image ... */
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  /* Adjustments for mobile view */
+}
+
+        /* Custom CSS styles */
+        /* Style for the profile card */
+        .profile-card {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        /* Style for the navigation menu */
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+        }
+        .nav-menu li {
+            margin-bottom: 10px;
+        }
+        .nav-menu li a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .nav-menu li a .icon {
+            margin-right: 10px;
+        }
+        /* Style for the top bar */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        /* Style for the overview section */
+        .overview-section {
+            margin-bottom: 20px;
+        }
+        .overview-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        /* Style for the test performance section */
+        .test-performance {
+            margin-bottom: 20px;
+        }
+        /* Style for the class schedule section */
+        .class-schedule {
+            margin-bottom: 20px;
+        }
+        /* Style for the recent classes section */
+        .recent-classes {
+            margin-bottom: 20px;
+        }
+        /* Style for the notice board section */
+        .notice-board {
+            margin-bottom: 20px;
+        }
+        .notice-item {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar (Left Section) -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <!-- Profile Card -->
+                <div class="profile-card">
+                    <img src="profile.jpg" alt="Profile Picture" class="img-fluid mb-3">
+                    <h5>Name: John Doe</h5>
+                    <p>Class: 10th Grade</p>
+                </div>
+                <!-- Navigation Menu -->
+                <ul class="nav-menu">
+                    <li><a href="#"><span class="icon">🏠</span> Dashboard</a></li>
+                    <li><a href="#"><span class="icon">🎓</span> Live Class</a></li>
+                    <li><a href="#"><span class="icon">📝</span> Assignment</a></li>
+                    <li><a href="#"><span class="icon">🔔</span> Notification</a></li>
+                    <li><a href="#"><span class="icon">📊</span> Results</a></li>
+                    <li><a href="#"><span class="icon">👫</span> Classmate</a></li>
+                    <li><a href="#"><span class="icon">💬</span> Messages</a></li>
+                    <li><a href="#"><span class="icon">📚</span> Syllabus</a></li>
+                    <li><a href="#"><span class="icon">⚙️</span> Settings</a></li>
+                    <li><a href="#"><span class="icon">❓</span> Help & Support</a></li>
+                    <li><a href="#"><span class="icon">🚪</span> Logout</a></li>
+                </ul>
+            </div>
+
+
+            <!-- Main Content (Right Section) -->
+            <div class="col-md-9">
+                <!-- Top Bar -->
+                <div class="top-bar">
+                    <input type="text" class="form-control" placeholder="Search...">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Profile
+                            <span class="badge bg-primary">3</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                            <li><a class="dropdown-item" href="#">Notifications</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Overview Section -->
+                <div class="overview-section">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="overview-card">
+                                <h5>Class Rank</h5>
+                                <p>#3 out of 50</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="overview-card">
+                                <h5>Attendance</h5>
+                                <p>85%</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="overview-card">
+                                <h5>Achievements</h5>
+                                <p>3</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="overview-card">
+                                <h5>Performance</h5>
+                                <p>Good</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Test Performance Section -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                      Test Performance
+                    </div>
+                    <div class="card-body">
+                      <!-- Chart placeholder if you're using a chart library -->
+                      <canvas id="testPerformanceChart"></canvas>
+                      <!-- Static example if not using a chart library -->
+                      <div class="progress mb-2">
+                        <div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <small class="text-muted">540/600 points</small>
+                    </div>
+                  </div>
+
+                <!-- Class Schedule Section -->
+                <div class="class-schedule">
+                    <h5>Class Schedule</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item">8:00 AM - Mathematics - Mrs. Smith</li>
+                        <li class="list-group-item">10:00 AM - Science - Mr. Johnson</li>
+                        <li class="list-group-item">12:00 PM - English - Mrs. Davis</li>
+                    </ul>
+                </div>
+
+                <!-- Recent Classes Section -->
+                <div class="recent-classes">
+                    <h5>Recent Classes</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Mathematics - Algebra</h5>
+                            <p class="card-text">Chapter 5 - Quadratic Equations</p>
+                            <p class="card-text">Scheduled Time: 8:00 AM</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Science - Biology</h5>
+                            <p class="card-text">Chapter 3 - Photosynthesis</p>
+                            <p class="card-text">Scheduled Time: 10:00 AM</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notice Board Section -->
+                <div class="notice-board">
+                    <h5>Notice Board</h5>
+                    <div class="notice-item">
+                        <h6>Mathematics Test</h6>
+                        <p>Test on Chapter 6 is scheduled for tomorrow.</p>
+                        <img src="teacher1.jpg" alt="Teacher Profile Picture" class="img-fluid">
+                    </div>
+                    <div class="notice-item">
+                        <h6>Science Project</h6>
+                        <p>Submit your science project report by the end of this week.</p>
+                        <img src="teacher2.jpg" alt="Teacher Profile Picture" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
