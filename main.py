@@ -64,7 +64,7 @@ def generate_sub_modules(topic_name):
     return clean_json_string
 
 def generate_sub_modules_content(topic_name):
-    input_text = f'Generate in detail explanation for this topic {topic_name} in this format:{"content"}'
+    input_text = f'Generate in detail explanation for this topic {topic_name} with resources urls in this format:{"content"}'
     response=gemini_call(input_text)
     original_string = response.text
     json_string = str(original_string)
@@ -76,6 +76,9 @@ def generate_sub_modules_content(topic_name):
 
 @app.route('/')
 def index():
+    return render_template('index.html')
+@app.route('/index.html')
+def indexhtml():
     return render_template('index.html')
 @app.route('/login')
 def login():
