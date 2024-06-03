@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+    <link rel="stylesheet" href="styles.css">
+  
+    <!-- slider stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="static/css/bootstrap.css" />
+    <!-- font awesome style -->
+    <link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css" />
+  
+    <!-- Custom styles for this template -->
+    <link href="static/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="static/css/responsive.css" rel="stylesheet" /><!-- Custom CSS -->
+
+    <style>
+    .register-photo {
+  background: #f1f7fc;
+  padding: 80px 0;
+}
+
+.register-photo .image-holder {
+    display: table-cell;
+    width: auto;
+    background: url(/static/images/mock-removebg-preview.jpg);
+    /* background: url(https://i.imgur.com/Fqm9rWL.jpg); */
+    /* background: url(/static/images/mockInterview.jpg); */
+    background-size: 100% 100%; /* Adjusted to fit the image completely */
+}
+
+.register-photo .form-container {
+  display: table;
+  max-width: 900px;
+  width: 90%;
+  margin: 0 auto;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+}
+
+.register-photo form {
+  display: table-cell;
+  width: 400px;
+  background-color: #ffffff;
+  padding: 40px 60px;
+  color: #505e6c;
+}
+
+@media (max-width:991px) {
+  .register-photo form {
+    padding: 40px;
+  }
+}
+
+.register-photo form h2 {
+  font-size: 24px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+.register-photo form .form-control {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #dfe7f1;
+  border-radius: 0;
+  box-shadow: none;
+  outline: none;
+  color: inherit;
+  text-indent: 0px;
+  height: 40px;
+}
+
+.register-photo form .form-check {
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.register-photo form .btn-primary {
+  background: green;
+  border: none;
+  border-radius: 4px;
+  padding: 11px;
+  box-shadow: none;
+  margin-top: 35px;
+  text-shadow: none;
+  outline: none !important;
+}
+
+.register-photo form .btn-primary:hover, .register-photo form .btn-primary:active {
+  background: green;
+}
+
+.register-photo form .btn-primary:active {
+  transform: translateY(1px);
+}
+
+.register-photo form .already {
+  display: block;
+  text-align: center;
+  font-size: 12px;
+  color: #6f7a85;
+  opacity: 0.9;
+  text-decoration: none;
+}
+    </style>
+
+    <title>Design a short form page.</title>
+  </head>
+  <body>
+    {% extends "nav2.html" %}
+  
+    {% block content %}
+    <div class="register-photo">
+        <div class="form-container">
+            <div class="image-holder"></div>
+            <form id="quizForm" method="post" action="javascript:void(0);">
+                <h2 class="text-center"><strong>Take a Quiz</strong></h2>
+                <div class="form-group">
+                    <input class="form-control" type="number" name="num_of_questions" placeholder="Number of Questions">
+                </div>
+                <div class="form-group">
+                    <select class="form-control" name="difficulty">
+                        <option value="">Select Difficulty</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" name="board">
+                        <option value="">Select Board</option>
+                        <option value="CBSE">CBSE</option>
+                        <option value="SSC">SSC</option>
+                        <option value="ICSE">ICSE</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" name="class">
+                        <option value="">Select Class</option>
+                        <option value="10">Class 10</option>
+                        <option value="11">Class 11</option>
+                        <option value="12">Class 12</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" name="subject">
+                        <option value="">Select Subject</option>
+                        <option value="Maths">Maths</option>
+                        <option value="Science">Science</option>
+                        <option value="Social">Social</option>
+                        <option value="English">English</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="chapter" placeholder="Chapter or topic">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block" type="submit">Start Quiz</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.getElementById('quizForm').addEventListener('submit', function(event) {
+          event.preventDefault(); // Prevent form submission
+      
+          // Serialize form data into JSON object
+          const formData = {};
+          const formElements = this.elements;
+          for (let i = 0; i < formElements.length; i++) {
+            const element = formElements[i];
+            if (element.type !== 'submit') {
+              formData[element.name] = element.value;
+            }
+          }
+          console.log(formData);
+      
+          // Fetch data from '/quizgene'
+          fetch('/quizgene', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            // Handle response from backend
+            console.log('Response from backend:', data);
+      
+            // Create a form element
+            const form = document.createElement('form');
+            form.method = 'post'; // Use POST method
+            form.action = '/testpage'; // Specify the action URL
+      
+            // Create an input element to pass the data
+            const input = document.createElement('input');
+            input.type = 'hidden'; // Hide the input
+            input.name = 'quiz_data'; // Specify the name of the parameter
+            input.value = JSON.stringify(data);
+      
+            // Append the input to the form
+            form.appendChild(input);
+      
+            // Append the form to the document body
+            document.body.appendChild(form);
+      
+            // Submit the form
+            form.submit();
+          })
+          .catch(error => {
+            // Handle errors
+            console.error('There was a problem with the fetch operation:', error);
+          });
+        });
+      </script>
+      
+    {% endblock%}
+  </body>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+</html>

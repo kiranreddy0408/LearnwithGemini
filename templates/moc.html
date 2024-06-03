@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Answer Page</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    /* Custom CSS */
+    #left-section, #right-section {
+      padding: 20px;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .card {
+      margin-bottom: 20px;
+    }
+    .section-divider {
+      border-right: 2px solid #ccc; /* Adjust border color and thickness as needed */
+    }
+    video {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 section-divider" id="left-section">
+        <div>
+          <video id="video-preview" autoplay></video>
+          <button id="start-answer" class="btn btn-primary mt-2">Start Answering</button>
+          <button id="stop-record" class="btn btn-danger mt-2">Stop Recording</button>
+          <button id="submit-answer" class="btn btn-success mt-2">Submit Answer</button>
+        </div>
+        <div class="questions mt-4">
+          <div class="question">
+            <label>
+              <input type="radio" name="question1"> Question 1
+            </label>
+          </div>
+          <div class="question">
+            <label>
+              <input type="radio" name="question2"> Question 2
+            </label>
+          </div>
+          <!-- More questions can be added here -->
+        </div>
+      </div>
+      <div class="col-md-6" id="right-section">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Correctness</h5>
+            <!-- Content related to correctness -->
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Improvements</h5>
+            <!-- Content related to improvements -->
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Grammar and Spell Check</h5>
+            <!-- Content related to grammar and spell check -->
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Tone</h5>
+            <!-- Content related to tone -->
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Correct Answer</h5>
+            <!-- Content related to correct answer -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Access the user's camera and stream it to the video element
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(function(stream) {
+        var video = document.getElementById('video-preview');
+        video.srcObject = stream;
+        video.play();
+      })
+      .catch(function(err) {
+        console.log('An error occurred: ' + err);
+      });
+  </script>
+</body>
+</html>

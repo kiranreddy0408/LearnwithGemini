@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gemini Response</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+  }
+  .explanation {
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+  .property {
+    font-weight: bold;
+  }
+  .resource-link {
+    color: blue;
+  }
+  .video-link {
+    color: green;
+  }
+</style>
+</head>
+<body>
+<script>
+  const response = {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "{\"explaination\":[\"**Formation of Ionic Compounds**\\n\\nIonic compounds form when a metal loses one or more electrons to a nonmetal. This happens when the metal and nonmetal have a large difference in electronegativity, which is a measure of an atom's ability to attract electrons.\\n\\nWhen a metal loses electrons, it becomes a positively charged ion called a cation. When a nonmetal gains electrons, it becomes a negatively charged ion called an anion. The oppositely charged ions are then attracted to each other by electrostatic forces, forming an ionic bond.\\n\\n**Properties of Ionic Compounds**\\n\\nIonic compounds have several characteristic properties:\\n\\n* **High melting and boiling points:** Ionic compounds have strong electrostatic forces between their ions, which makes it difficult to break them apart. This results in high melting and boiling points.\\n* **Solubility in water:** Ionic compounds are generally soluble in water. This is because water molecules are polar, meaning they have a positive end and a negative end. The positive end of the water molecule is attracted to the negative ions in the ionic compound, and the negative end of the water molecule is attracted to the positive ions in the ionic compound. This attraction dissolves the ionic compound in water.\\n* **Electrical conductivity:** Ionic compounds conduct electricity when they are dissolved in water or melted. This is because the ions in the ionic compound are free to move, allowing them to conduct electricity.\\n\\n**Resources:**\\n\\n* [Ionic Compounds](https://www.khanacademy.org/science/chemistry/chemical-bonds/ionic-bonds/a/ionic-compounds)\\n* [Properties of Ionic Compounds](https://www.thoughtco.com/properties-of-ionic-compounds-606594)\\n\\n**Video Links:**\\n\\n* [Formation of Ionic Compounds](https://www.youtube.com/watch?v=F_gR5nY39IY)\\n* [Properties of Ionic Compounds](https://www.youtube.com/watch?v=27e-aEzp0c0)\"]}",
+            }
+          ],
+          "resources": [
+            "https://www.khanacademy.org/science/chemistry/chemical-bonds/ionic-bonds/a/ionic-compounds",
+            "https://www.thoughtco.com/properties-of-ionic-compounds-606594"
+          ],
+          "videolinks": [
+            "https://www.youtube.com/watch?v=F_gR5nY39IY",
+            "https://www.youtube.com/watch?v=27e-aEzp0c0"
+          ]
+        }
+      }
+    ]
+  };
+
+  // Parse and render Gemini response
+  const content = response.candidates[0].content;
+  const parts = content.parts;
+  const resources = content.resources;
+  const videoLinks = content.videolinks;
+
+  parts.forEach(part => {
+    const text = JSON.parse(part.text).explaination.join('\n');
+    const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<span class="explanation">$1</span>');
+    document.body.innerHTML += `<p>${formattedText}</p>`;
+  });
+
+  resources.forEach(resource => {
+    document.body.innerHTML += `<p class="resource-link">Resource: <a href="${resource}" target="_blank">${resource}</a></p>`;
+  });
+
+  videoLinks.forEach(videoLink => {
+    document.body.innerHTML += `<p class="video-link">Video Link: <a href="${videoLink}" target="_blank">${videoLink}</a></p>`;
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Grade Dashboard</title>
+    <link rel="shortcut icon" href="./images/logo.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/ugdash.css">
+    <script type="text/javascript" src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo" title="School Management System">
+            <img src="static/images/logo.png" alt="">
+            <h2>EDUSYNC</h2>
+        </div>
+        <div class="navbar">
+            <a href="index.html" class="active">
+                <span class="material-icons-sharp">home</span>
+                <h3>Home</h3>
+            </a>
+            <!-- <a href="timetable.html">
+                <span class="material-icons-sharp">today</span>
+                <h3>Time-table</h3>
+            </a> 
+            <a href="exam.html">
+                <span class="material-icons-sharp">grid_view</span>
+                <h3>Examination</h3>
+            </a> -->
+              <a href="http://localhost:8502/">
+                <span class="material-icons-sharp">password</span>
+                <h3>Chat with pdf</h3>
+            </a> 
+            <!-- <a href="password.html">
+                <span class="material-icons-sharp">password</span>
+                <h3>Change Password</h3>
+            </a> -->
+            <a href="login">
+                <span class="material-icons-sharp" onclick="">logout</span>
+                <h3>Logout</h3>
+            </a>
+        </div>
+        <div id="profile-btn">
+            <span class="material-icons-sharp">person</span>
+        </div>
+        <div class="theme-toggler">
+            <span class="material-icons-sharp active">light_mode</span>
+            <span class="material-icons-sharp">dark_mode</span>
+        </div>
+        
+    </header>
+    <div class="container">
+        <aside>
+            <div class="profile">
+                <div class="top">
+                    <div class="profile-photo">
+                        <img src="static/images/profile-1.jpg" alt="">
+                    </div>
+                    <div class="info">
+                        <p>Hey, <b>Alex</b> </p>
+                        <small class="text-muted">Undergrad</small>
+                    </div>
+                </div>
+                <div class="about">
+                    <h5>Date of Birth</h5>
+                    <p>29-Feb-2008</p>
+                    <h5>Contact</h5>
+                    <p>1234567890</p>
+                    <h5>Email</h5>
+                    <p>alex@example.com</p>
+                    <h5>Address</h5>
+                    <p>123 School Street, Anytown, USA</p>
+                    
+                </div>
+                <div class="rank">
+                    
+                </div>
+            </div>
+        </aside>
+
+        <main>
+            <br>
+            
+            <h1>Subject Performance</h1>
+            <div class="subjects">
+                <div class="">
+                    <span class="material-icons-sharp">functions</span>
+                    <h3>MAthematics</h3>
+                    <div class="sub">
+                        <h4>Algebra  <span class="percentage"> 75%</span></h4>
+                        <h4>Geometry <span class="percentage"> 80%</span></h4>
+                        <h4>Basic Math <span class="percentage"> 90%</span></h4>
+                      </div>
+                    
+
+                    <!-- <h2>A-</h2> -->
+                    <!-- <small class="text-muted">Last Exam</small> -->
+                </div>
+                <div class="english">
+                    <span class="material-icons-sharp">language</span>
+                    <h3>English</h3>
+                    <div class="sub">
+                        <h4>speaking proficency<span class="percentage"> 65%</span></h4>
+                        <h4>vocubalry <span class="percentage"> 50%</span></h4>
+                        <h4>Reading skills <span class="percentage"> 90%</span></h4>
+                      </div>
+                    <!-- <h2>B</h2> -->
+                    <!-- <small class="text-muted">Last Exam  20-03-2024</small> -->
+                </div>
+                <div class="science">
+                    <span class="material-icons-sharp">school</span>
+                    <h3>DSA</h3>
+                    <div class="sub">
+                        <h4>Arrays & Strings<span class="percentage"> 80%</span></h4>
+                        <h4>LINkedlist<span class="percentage"> 50%</span></h4>
+                        <h4>Graphs<span class="percentage"> 0%</span></h4>
+                      </div>
+                    <!-- <h2>B+</h2> -->
+                    <!-- <small class="text-muted">Last Exam</small> -->
+                </div>
+                <div class="history">
+                    <span class="material-icons-sharp">history_edu</span>
+                    <h3>Programming</h3>
+                    <!-- <h2>A</h2> -->
+                    <div class="sub">
+                        <h4> JAVA<span class="percentage"> 75%</span></h4>
+                        <h4> PYTHON<span class="percentage"> 80%</span></h4>
+                        <h4>DSA <span class="percentage"> 90%</span></h4>
+                      </div>
+                    <!-- <small class="text-muted">Last Exam</small> -->
+                </div>
+            </div>
+            <br>
+                <div class="quiz-section">
+                    <h1>QUIZ</h1>
+                <br>
+                    <div class="section-title">Java</div>
+                    <div class="box-container">
+                      <div class="box">
+                        <div class="subject">Core Java</div>
+                        <div class="sub-topics">Variables,<br> Operators,<br> Control Statements,<br>OOPs <br> moree.. </div>
+                        <div class="details">Questions: 20 | Duration: 30 minutes</div>
+                      </div>
+                      <div class="box">
+                        <div class="subject">DSA through Java</div>
+                        <div class="sub-topics">  Arrays & Strings ,<br> stacks & QUeue,<br> LinkedList <br> Graphs <br> moree.. </div>
+                        <div class="details">Questions: 20 | Duration: 30 minutes</div>
+                      </div>
+                      <div class="box">
+                        <div class="subject">Advanced Java</div>
+                        <div class="sub-topics">Threads,<br> Collections,<br> Networking,<br> JDBC <br></div>
+                        <div class="details">Questions: 15 | Duration: 25 minutes</div>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div class="quiz-section">
+                    <div class="section-title">DSA (Data Structures and Algorithms)</div>
+                    <div class="box-container">
+                      <div class="box">
+                        <div class="subject">Arrays and Strings</div>
+                        <div class="sub-topics">Array Operations,<br> String Manipulation,<br> String Algorithms <br> </div>
+                        <div class="details">Questions: 25 | Duration: 40 minutes</div>
+                      </div>
+                      <div class="box">
+                        <div class="subject">Linked Lists</div>
+                        <div class="sub-topics">Singly Linked List,<br> Doubly Linked List, <br> Circular Linked List <br> problems</div>
+                        <div class="details">Questions: 18 | Duration: 35 minutes</div>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div class="quiz-section">
+                    <div class="section-title">Python</div>
+                    <div class="box-container">
+                      <div class="box">
+                        <div class="subject">Basics of Python</div>
+                        <div class="sub-topics">Syntax,<br> Data Types,<br> Variables,<br> Operators</div>
+                        <div class="details">Questions: 20 | Duration: 30 minutes</div>
+                      </div >
+                      <div class="box">
+                        <div class="subject">Advanced Python</div>
+                        <div class="sub-topics">Decorators <br>, Generators,<br> File Handling,<br>Regular Expressions</div>
+                        <div class="details">Questions: 15 | Duration: 25 minutes</div>
+                      </div>
+                    </div>
+                  </div>
+              
+
+            <div class="timetable" id="timetable">
+                <div>
+                    <span id="prevDay">&lt;</span>
+                    <h2>This Week's Schedule</h2>
+                    <span id="nextDay">&gt;</span>
+                </div>
+                <span class="closeBtn" onclick="timeTableAll()">X</span>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Time</th>
+                            <th>Subject</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </main>
+
+        <div class="right">
+            <div class="announcements">
+                <h2>Learning Progres</h2>
+                <div class="updates">
+                    <div class="message">
+                        <canvas id="performanceChart"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Sample data for student's performance and peer comparison
+      const studentPerformance = [80, 75, 85, 90, 70]; // Example: [Quiz 1 score, Quiz 2 score, Quiz 3 score, ...]
+      const peerPerformance = [70, 65, 80, 85, 75]; // Example: [Peer 1 score, Peer 2 score, Peer 3 score, ...]
+
+      // Chart.js configuration
+      const ctx = document.getElementById('performanceChart').getContext('2d');
+      const performanceChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Quiz 1', 'Quiz 2', 'Quiz 3', 'Quiz 4', 'Quiz 5'], // Example: Quiz names
+          datasets: [{
+            label: 'Your Performance',
+            data: studentPerformance,
+            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          }, {
+            label: 'Peer Performance',
+            data: peerPerformance,
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      });
+    });
+  </script>
+                        <!-- <p> <b>Upcoming Event:</b> Science Fair on March 15th.</p> -->
+                        <!-- <small class="text-muted">Yesterday</small> -->
+                    </div>
+                    <!-- <div class="message">
+                        <p> <b>Reminder:</b> Parent-Teacher Conferences next week.</p>
+                        <small class="text-muted">2 Days Ago</small>
+                    </div> -->
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="announcements">
+                <h2>AI MOCK INTERVIEW ANALYSIS</h2>
+                <!-- <br> -->
+                <div class="updates">
+                    <div class="message">
+                        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+                        <script type="text/javascript">
+                          window.onload = function () {
+                            var chart = new CanvasJS.Chart("chartContainer", {
+                              title: {
+                                text: "Topic DSA"
+                              },
+                              legend: {
+                                maxWidth: 350,
+                                itemWidth: 120
+                              },
+                              data: [{
+                                type: "pie",
+                                showInLegend: true,
+                                legendText: "{indexLabel}",
+                                dataPoints: [
+                                  { y: 36, indexLabel: "GRAMMER" },
+                                  { y: 34, indexLabel: "Correctness" },
+                                  { y: 31, indexLabel: "Improvemnt" },
+                                  { y: 11, indexLabel: "Tone" },
+                                  { y: 17, indexLabel: "Correct ANSWER" },
+                                //   { y: 4303364, indexLabel: "Nintendo 3DS" },
+                                //   { y: 1717786, indexLabel: "PS Vita" }
+                                ]
+                              }]
+                            });
+                            chart.render();
+                          }
+                        </script>
+                      </div>
+                    </div>
+                    <!-- <div class="message"> -->
+                        <!-- <p> <b>Reminder:</b> Parent-Teacher Conferences next week.</p> -->
+                        <!-- <small class="text-muted">2 Days Ago</small> -->
+                    <!-- </div> -->
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="announcements">
+                <h2>Announcements</h2>
+                <div class="updates">
+                    <div class="message">
+                        <p> <b>Upcoming Event:</b> Science Fair on March 15th.</p>
+                        <small class="text-muted">Yesterday</small>
+                    </div>
+                    <div class="message">
+                        <p> <b>Reminder:</b> Parent-Teacher Conferences next week.</p>
+                        <small class="text-muted">2 Days Ago</small>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="attendance">
+                <h2>Attendance</h2>
+                <div class="attendance-details">
+                    <p>Overall: 92%</p>
+                    <p>Absences: 4</p>
+                    <p>Missed classes: 2</p>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+    <script src="static/js/timeTable.js"></script>
+    <script src="static/js/app.js"></script>
+</body>
+</html>

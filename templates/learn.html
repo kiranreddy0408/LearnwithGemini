@@ -6,17 +6,17 @@
 <title>{{topic_name}}</title>
 <link rel="stylesheet" href="styles.css">
 
-  <!-- slider stylesheet -->
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
-  <!-- bootstrap core css -->
-  <link rel="stylesheet" type="text/css" href="static/css/bootstrap.css" />
-  <!-- font awesome style -->
-  <link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css" />
+<!-- slider stylesheet -->
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+<!-- bootstrap core css -->
+<link rel="stylesheet" type="text/css" href="static/css/bootstrap.css" />
+<!-- font awesome style -->
+<link rel="stylesheet" type="text/css" href="static/css/font-awesome.min.css" />
 
-  <!-- Custom styles for this template -->
-  <link href="static/css/style.css" rel="stylesheet" />
-  <!-- responsive style -->
-  <link href="static/css/responsive.css" rel="stylesheet" />
+<!-- Custom styles for this template -->
+<link href="static/css/style.css" rel="stylesheet" />
+<!-- responsive style -->
+<link href="static/css/responsive.css" rel="stylesheet" />
 <style>
     .container {
         display: flex;
@@ -28,6 +28,8 @@
 
     .right-section {
         width: 50%;
+        margin-top: 4%;
+        margin-left:3%;
         /* Style right section as needed */
     }
 
@@ -61,9 +63,8 @@
     }
     .content{
         width: 100%;
-    margin-left: 10%;
-    margin-top: 10%;
-
+        margin-left: 10%;
+        margin-top: 10%;
     }
 
 </style>
@@ -75,24 +76,22 @@
     <div class="container">
 
         <div class="left-section">
-            <h2>Vector Learning Modules</h2>
+            <h2>{{topic_name}}</h2>
             <div id="modules-container"></div>
         </div>
         <div class="right-section">
             <!-- Right section content goes here -->
+            <div class="explanation-section"></div>
+<div class="resources-section"></div>
+<div class="videos-section"></div>
         </div>
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const modulesContainer = document.getElementById('modules-container');
-            const modulesDataint = `{{sub_modules}}`
-//   const modulesData = {
-//     "sub_modules": ["Vectors and Scalars", "Adding and Subtracting Vectors", "Multiplying Vectors by Scalars", "Dot Product", "Cross Product"]
-//   };
-const modulesDataintFixed =modulesDataint.replace(/&#34;/g, '"');
-
-// Parse the quiz data from the fixed string
-const modulesData= JSON.parse(modulesDataintFixed);
+            const modulesDataint = `{{sub_modules}}`;
+            const modulesDataintFixed = modulesDataint.replace(/&#34;/g, '"');
+            const modulesData= JSON.parse(modulesDataintFixed);
 
             modulesData.sub_modules.forEach(module => {
                 const moduleDiv = document.createElement('div');
@@ -111,63 +110,98 @@ const modulesData= JSON.parse(modulesDataintFixed);
                 moduleDiv.appendChild(checkbox);
                 moduleDiv.appendChild(label);
 
-               
+                const startLearningButton = document.createElement('button');
+                startLearningButton.textContent = 'Start Learning';
+                startLearningButton.className = 'start-learning-btn';
+                startLearningButton.addEventListener('click', function() {
+                    // AJAX request to Flask backend
+                    fetch('/get_module_content', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ submodule: module, topic_name: '{{topic_name}}' }),
+})
+.then(response => response.json())
+.then(data => {
+    // console.log(data.content);
+
+
+    document.querySelector('.explanation-section').innerHTML = '';
+document.querySelector('.resources-section').innerHTML = '';
+document.querySelector('.videos-section').innerHTML = '';
+    const content = JSON.parse(data.content); 
+    // console.log(content);// Parse the content JSON string
+    const explanation = content.explaination; // Access the explanation array
+    const resources = content.resources; // Access the resources array
+    const videoLinks = content.videolinks; // Access the videolinks array
+
+    // Log the arrays to verify their contents
+    console.log(explanation);
+    console.log(resources);
+    console.log(videoLinks);
+   
+    // Display explanation
+    const explanationSection = document.createElement('div');
+    explanationSection.classList.add('explanation');
+    explanationSection.innerHTML = '<h2>Explanation:</h2>';
+    explanation.forEach(point => {
+        const pointData = document.createElement('p');
+        pointData.innerHTML = point; // Bold text between '**'
+        explanationSection.appendChild(pointData);
+    });
+    document.querySelector('.explanation-section').appendChild(explanationSection);
+
+    // Display resource URLs
+    const resourcesSection = document.createElement('div');
+    resourcesSection.classList.add('resources');
+    resourcesSection.innerHTML = '<h2>Resources:</h2>';
+    const resourceLink = 'https://byjus.com/?s=' + encodeURIComponent('{{topic_name}}');
+    const rs = document.createElement('a');
+    rs.href = resourceLink;
+    rs.textContent = 'Resources';
+    rs.target = '_blank'; // Open link in a new tab/window
+    resourcesSection.appendChild(rs);
+    resources.forEach(resource => {
+        const link = document.createElement('a');
+        link.href = resource;
+        link.target = '_blank'; // Open in a new tab
+        link.textContent = resource;
+        resourcesSection.appendChild(link);
+        resourcesSection.appendChild(document.createElement('br'));
+    });
+    document.querySelector('.resources-section').appendChild(resourcesSection);
+
+    // Display video tags with respective video URLs
+    const videosSection = document.createElement('div');
+    videosSection.classList.add('videos');
+    videosSection.innerHTML = '<h2>Video Links:</h2>';
+
+    // Assuming `videoLink` is a variable containing the URL
+    const videoLink = 'https://www.youtube.com/results?search_query=' + encodeURIComponent('{{sub_modules}}');
+    const anchor = document.createElement('a');
+    anchor.href = videoLink;
+    anchor.textContent = 'Click here to view videos';
+    anchor.target = '_blank'; // Open link in a new tab/window
+    videosSection.appendChild(anchor);
+
+    document.querySelector('.videos-section').appendChild(videosSection);
+    const quizButton = document.createElement('a');
+    quizButton.href = 'quiz';
+    quizButton.textContent = 'Take Quiz';
+    quizButton.classList.add('btn', 'btn-primary', 'mt-3'); // Adding Bootstrap button classes
+    document.querySelector('.videos-section').appendChild(quizButton);
+})
+.catch(error => console.error('Error:', error));
+
+
+                });
+
+                moduleDiv.appendChild(startLearningButton);
+
+                modulesContainer.appendChild(moduleDiv);
             });
         });
-    </script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-    const modulesContainer = document.getElementById('modules-container');
-    const rightSection = document.querySelector('.right-section'); // Select the right section for displaying response
-    const modulesDataint = `{{sub_modules}}`;
-    // Assume modulesDataint is processed as before to get modulesData
-    const modulesDataintFixed = modulesDataint.replace(/&#34;/g, '"');
-    const modulesData = JSON.parse(modulesDataintFixed);
-
-    modulesData.sub_modules.forEach(module => {
-        const moduleDiv = document.createElement('div');
-        moduleDiv.className = 'module';
-
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.className = 'checkbox';
-        checkbox.id = module.replace(/\s+/g, '-').toLowerCase(); // Convert module name to id
-        checkbox.name = 'modules';
-
-        const label = document.createElement('label');
-        label.htmlFor = checkbox.id;
-        label.textContent = module;
-
-        moduleDiv.appendChild(checkbox);
-        moduleDiv.appendChild(label);
-
-        const startLearningButton = document.createElement('button');
-        startLearningButton.textContent = 'Start Learning';
-        startLearningButton.className = 'start-learning-btn';
-        startLearningButton.addEventListener('click', function() {
-            // AJAX request to Flask backend
-            fetch('/get_module_content', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({submodule: module}),
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Display the content in the right section
-                rightSection.innerHTML = `<div class="content">${data.content}</div>`; // Simple display, can be enhanced as needed
-            })
-            .catch(error => console.error('Error:', error));
-        });
-
-        moduleDiv.appendChild(startLearningButton);
-
-        modulesContainer.appendChild(moduleDiv);
-    });
-});
-
     </script>
     {% endblock %}
 </body>

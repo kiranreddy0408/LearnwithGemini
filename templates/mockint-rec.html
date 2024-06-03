@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Answer Page</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+   .container{
+      border-radius: 15px;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      background-color: #f0f0f0; /* Changed container color */
+      margin:auto;
+      margin-top:5%
+   }
+    /* Custom CSS */
+    #left-section, #right-section {
+      padding: 20px;
+    }
+    .question-card {
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      background-color: white;
+      padding: 15px;
+    }
+    .card {
+      margin-bottom: 20px;
+    }
+    .section-divider {
+      border-right: 2px solid #ccc; /* Adjust border color and thickness as needed */
+    }
+    video {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    .speaker {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 350px; /* Adjust the width as needed */
+      margin-bottom: 20px;
+    }
+    .btn-primary {
+      background-color: #007bff; /* Blue color for primary button */
+      border-color: #007bff;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3; /* Darker blue on hover */
+      border-color: #0056b3;
+    }
+    .btn-danger {
+      background-color: #dc3545; /* Red color for danger button */
+      border-color: #dc3545;
+    }
+    .btn-danger:hover {
+      background-color: #bb2d3b; /* Darker red on hover */
+      border-color: #bb2d3b;
+    }
+    .btn-success {
+      background-color: #28a745; /* Green color for success button */
+      border-color: #28a745;
+    }
+    .btn-success:hover {
+      background-color: #218838; /* Darker green on hover */
+      border-color: #218838;
+    }
+    .question-radio label {
+      font-weight: bold;
+    }
+    .heading-container {
+      text-align: center;
+    }
+    .correctness-container {
+      background-color: #f7d6d6; /* Light shade of red */
+    }
+    .grammar-container {
+      background-color: #d6f7d6; /* Light shade of green */
+    }
+    .tone-container {
+      background-color: #d6e5f7; /* Light shade of blue */
+    }
+    .improvements-container {
+      background-color: #f7f0d6; /* Light shade of yellow */
+    }
+    .correctans-container {
+      background-color: #f2f2f2; /* Light shade of gray */
+    }
+    #output {
+    width: 100%; /* Take up full width of the parent div */
+    height: auto; /* Take up full height of the parent div */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    padding: 10px; /* Add some padding for better appearance */
+    border: 1px solid #ccc; /* Add a border for visual separation */
+    border-radius: 5px; /* Add rounded corners */
+    resize: none; /* Prevent resizing */
+    overflow-y: auto; /* Add vertical scroll bar if content overflows */
+}
+  </style>
+</head>
+<body>
+   <div class="heading-container">
+      <h1>AI Mock Interview</h1>
+   </div>
+   <div class="heading-container">
+      <h2>Topic-{{topics}}</h2>
+   </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 section-divider" id="left-section">
+        <video id="video-preview" autoplay></video>
+        <div class="heading-container">
+         <h6>Select a question and start answering</h6>
+      </div>
+        <div class="speaker">
+         
+          <p id="action" style="color: grey; font-weight: 800;"></p>
+          <button onclick="startSpeechRecog()" class="btn btn-primary">Start Answering</button>
+          <button onclick="stopRecording()" class="btn btn-danger" style="display: none;margin-right:5px;margin-left:5px;" id="stopButton">Stop rec</button>
+          <button onclick="submitAnswer()" class="btn btn-success" style="margin-left:5px;margin-left:5px;" id="submitBtn">Submit</button>
+        </div>
+        <textarea id="output" placeholder="Type your answer or Click Start Rec button to record your answer" ></textarea>
+        <!-- <p id="output" style="display: none;"></p> -->
+        <div id="questions-container"></div>
+      </div>
+      <div class="col-md-6" id="right-section">
+        <div class="card correctness-container">
+          <div class="card-body">
+            <h5 class="card-title">Correctness</h5>
+            <p id="correctness"></p>
+          </div>
+        </div>
+        <div class="card grammar-container">
+          <div class="card-body">
+            <h5 class="card-title">Grammar</h5>
+            <p id="grammar"></p>
+          </div>
+        </div>
+        <div class="card tone-container">
+          <div class="card-body">
+            <h5 class="card-title">Tone</h5>
+            <p id="tone"></p>
+          </div>
+        </div>
+        <div class="card improvements-container">
+          <div class="card-body">
+            <h5 class="card-title">Improvements</h5>
+            <p id="improvements"></p>
+          </div>
+        </div>
+        <div class="card correctans-container">
+          <div class="card-body">
+            <h5 class="card-title">Correct Answer</h5>
+            <p id="correctans"></p>
+          </div>
+         </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    let selectedQuestion = null;
+
+    function selectQuestion(questionId) {
+        selectedQuestion = questionId;
+    }
+
+    function submitAnswer() {
+        const answerContent = document.getElementById('output').value;
+        console.log(answerContent);
+        if (selectedQuestion) {
+            //
+            // Send answerContent and selectedQuestion to the backend
+            const requestData = {
+                question: selectedQuestion,
+                answer:answerContent
+               //  answer: "The event loop in Node.js manages asynchronous tasks by continuously checking for pending operations and executing them in a non-blocking manner. It ensures that tasks, such as reading files or making network requests, are processed efficiently without delaying the program's execution. This enables Node.js applications to handle multiple operations concurrently and remain responsive. Overall, the event loop plays a critical role in Node.js' ability to handle high levels of concurrency and I/O operations effectively."
+            };
+            // Make an AJAX request to send the data to the backend
+            // Example:
+            fetch('/mockanalysis', {
+                method: 'POST',
+                body: JSON.stringify(requestData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => response.json())
+              .then(data => {
+                  const content = JSON.parse(data.content);
+                  console.log(content);
+
+                  // Extract data from arrays
+                  const correctness = content.correctness;
+                  const grammar = content.grammar;
+                  const tone = content.tone;
+                  const improvements = content.improvements;
+                  const correctans = content.correct_ans;
+
+                  // Display data in their respective containers
+                  displayContent('correctness', correctness);
+                  displayContent('grammar', grammar);
+                  displayContent('tone', tone);
+                  displayContent('improvements', improvements);
+                  displayCorrectAnswer('correctans', correctans);
+              });
+
+            function displayContent(containerId, contentArray) {
+                const container = document.getElementById(containerId);
+                container.innerHTML = ''; // Clear previous content
+
+                if (contentArray && Array.isArray(contentArray)) {
+                    contentArray.forEach((item, index) => {
+                        const itemElement = document.createElement('p');
+                        itemElement.innerText = `${index + 1}. ${item}`;
+                        container.appendChild(itemElement);
+                    });
+                } else {
+                    console.error(`Content array '${containerId}' is undefined or not an array.`);
+                }
+            }
+
+            function displayCorrectAnswer(containerId, correctansArray) {
+                const container = document.getElementById(containerId);
+                container.innerHTML = ''; // Clear previous content
+
+                if (correctansArray && Array.isArray(correctansArray)) {
+                    correctansArray.forEach((item, index) => {
+                        if (index === 1) { // Display the correct answer URL as a link
+                            const linkElement = document.createElement('a');
+                            linkElement.href = item;
+                            linkElement.innerText = 'Correct Answer';
+                            container.appendChild(linkElement);
+                        } else { // Display other items as paragraphs
+                            const itemElement = document.createElement('p');
+                            itemElement.innerText = item;
+                            container.appendChild(itemElement);
+                        }
+                    });
+                } else {
+                    console.error(`Correct answer array '${containerId}' is undefined or not an array.`);
+                }
+            }
+        } else {
+            console.error('No question selected');
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const questionsContainer = document.getElementById('questions-container');
+
+        const intdataStringFixed = `{{intdata}}`;
+        const intdataString = intdataStringFixed.replace(/&#34;/g, '"');
+
+        const intData = JSON.parse(intdataString);
+
+        // Access the array of questions from the object
+        const questionsArray = intData.questions;
+
+        // Check if questionsArray is actually an array
+        if (Array.isArray(questionsArray)) {
+            questionsArray.forEach((question, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+
+                // Create a radio button for the question
+                const radioButton = document.createElement('input');
+                radioButton.type = 'radio';
+                radioButton.className = 'radio';
+                radioButton.id = `question-${index + 1}`; // Unique ID for each question
+                radioButton.name = 'questions';
+
+                // Add onclick event to select the question
+                radioButton.onclick = () => selectQuestion(question);
+
+                // Create a label for the radio button
+                const label = document.createElement('label');
+                label.htmlFor = radioButton.id;
+                label.textContent = question;
+
+                // Append the radio button and label to the question card
+                questionCard.appendChild(radioButton);
+                questionCard.appendChild(label);
+
+                // Append the question card to the questionsContainer
+                questionsContainer.appendChild(questionCard);
+            });
+        } else {
+            console.error("intData.questions is not an array.");
+        }
+    });
+    let recognition;
+let interimTranscript = '';
+
+function startSpeechRecog() {
+    document.getElementById("output").value = "Answer:";
+    var output = document.getElementById('output');
+    var action = document.getElementById('action');
+    var transcriptPara = document.getElementById('transcript');
+    recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.onstart = () => {
+        action.innerHTML = "Listening...";
+        document.getElementById('stopButton').style.display = "inline";
+    };
+    recognition.onresult = (e) => {
+        interimTranscript = '';
+        for (var i = e.resultIndex; i < e.results.length; ++i) {
+            if (e.results[i].isFinal) {
+                output.value += e.results[i][0].transcript;
+                transcriptPara.value += e.results[i][0].transcript + ' ';
+            } else {
+                interimTranscript += e.results[i][0].transcript;
+            }
+        }
+    };
+    recognition.start();
+}
+
+function stopRecording() {
+    recognition.stop();
+    document.getElementById('action').innerHTML = "Recording Stopped";
+    document.getElementById('stopButton').style.display = "none";
+    document.getElementById('submitBtn').style.display = "inline"; // Show submit button
+    document.getElementById('output').innerHTML += interimTranscript;
+}
+  </script>
+  
+  <script>
+   // Access the user's camera and stream it to the video element
+   navigator.mediaDevices.getUserMedia({ video: true })
+     .then(function(stream) {
+       var video = document.getElementById('video-preview');
+       video.srcObject = stream;
+       video.play();
+     })
+     .catch(function(err) {
+       console.log('An error occurred: ' + err);
+     });
+ </script>
+</body>
+</html>
