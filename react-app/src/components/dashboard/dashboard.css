@@ -1,0 +1,58 @@
+.dashboard {
+    padding: 20px;
+    flex-grow: 1;
+  }
+  
+  .header {
+    background: #f1f1f1;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .header h1 {
+    margin: 0;
+    font-size: 24px;
+  }
+  
+  .header p {
+    margin: 10px 0 0;
+    font-size: 16px;
+  }
+  
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .latest-results, .time-spent, .courses {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .latest-results ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .latest-results ul li {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+  }
+  
+  .time-spent .chart {
+    height: 200px;
+    background: #f1f1f1;
+    border-radius: 8px;
+  }
+  
+  .courses .course {
+    background: #f9f9f9;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+  }
+  
